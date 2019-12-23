@@ -1,0 +1,29 @@
+{
+  "nodeLocation": "Niederneuendorf, Brandenburg",
+  "hidden": false,
+  "Sysop": "Andy skyandy.am@gmail.com",
+  "qth": [
+    {
+      "name": "Brandenburg Niederneuendorf",
+      "pos": {
+        "lat": "52.5615",
+        "long": "13.4347",
+        "loc": "JO62OO"
+      },
+	"rx": {
+        "70cm": {
+          "name": "Motorola GM360",
+          "freq": "432.875 Mhz",
+          "sqlType": "DCS",
+          "sqlCode": "D25",
+          "ant": [
+            {
+              "comment": "Diamond X-50 omni",
+              "height": 8
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
