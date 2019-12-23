@@ -34,63 +34,6 @@ td.tx {
     vertical-align: middle;
 }
 
-th.logline {
-    border: 2px;
-    padding: 2px;
-}
-
-th.led {
-    padding: 0em;
-    font-size: .8em;
-    background: url(led.png) center right no-repeat;
-    padding: 2px 6px;
-    border-collapse: separate;
-    border: 1px solid #000;
-    text-align:center;
-    vertical-align: middle;
-}
-
-td.double {
-    padding: 0em;
-    font-size: 20px;
-    background: #FA5858;
-    background: url(double.png) center center no-repeat;
-    border: 1px solid #DDD;
-    text-align:center;
-    vertical-align: middle;
-}
-
-td.denied {
-    padding: 0em;
-    font-size: 20px;
-    background: #FA5858;
-    background: url(accden.png) center center no-repeat;
-    border: 1px solid #DDD;
-    text-align:center;
-    vertical-align: middle;
-}
-
-td.ear {
-    padding: 0em;
-    width: 0px;
-    text-align: center;
-    margin-left: 0px;
-    background: url(ear.png) center center no-repeat;
-    background-position: center;
-    transition: all 0.6s ease-in;
-}
-
-td.logshow {
-    padding: 0em;
-    text-align: left;
-    font-size: .8em;
-    width: 500px;
-    background: linear-gradient(to left, transparent 50%, #1F7DE2 50%), linear-gradient(#F7f7f7, #EEE);
-    background-size: 200% 100%;
-    background-position: right bottom;
-    transition: all 0.6s ease-in;
-}
-
 .tooltip {
     font-size: 1em;
     position: relative;
