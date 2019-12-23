@@ -32,8 +32,12 @@ $current_style = file_get_contents(STYLECSS);
 echo "<style type=\"text/css\">".$current_style."</style></head>\n\r";
 
 if (count($callsign) >= 0){
-    echo "<main><table id=\"logtable\" with:80%>\n\r<tr>\n\r";
-    echo "<th>Callsign client</th>\n\r";
+    echo "<main><table id=\"logtable\" with:80%>\n\r";
+    
+    if( preg_match('/'.REFRESHSTATUS.'/i', 'SHOW')) {
+        echo "<tr><th colspan='7'>SVXReflector-Dashboard -=[ ".date("Y-m-d | H:i:s"." ]=-</th></tr>\n\r");
+    }
+    echo "<tr><th>Callsign client</th>\n\r";
 
     echo '<th class=\'state\'>State</th>'."\n\r";
     
@@ -80,9 +84,6 @@ if (count($callsign) >= 0){
             } // END NEWLOGFILEDATA FALSE
         }
 
-    if( preg_match('/'.REFRESHSTATUS.'/i', 'SHOW')) {
-        echo "<tr><th colspan='7'>SVXReflector-Dashboard -=[ ".date("Y-m-d | H:i:s"." ]=-</th></tr>\n\r");
-    }
 
     echo "</table>\n\r";
 
@@ -114,5 +115,5 @@ echo '<pre>
 ';
 }
 
-echo '<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons Lizenzvertrag" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a>&nbsp;<a style="font-size: 12px; text-decoration: none" rel="github" href="https://github.com/SkyAndy/svxrdb_server/">get your own Dashboard v'.DBVERSION.'</a>';
+echo '<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons Lizenzvertrag" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a>&nbsp;<a style="font-size: 12px; text-decoration: none" rel="github" href="https://github.com/SkyAndy/svxrdb-server/">get your own Dashboard v'.DBVERSION.'</a>';
 ?>
