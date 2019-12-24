@@ -24,6 +24,19 @@ th.state {
     text-align:center;
     vertical-align: middle;
 }
+/* smaal proto row*/
+th.proto {
+    font-size: 1em;
+    background: #666;
+    color: #FFF;
+    padding: 0em;
+    width: 40px;
+    border-collapse: separate;
+    border: 0px solid #000;
+    text-align:center;
+    vertical-align: middle;
+}
+
 td.tx {
     padding: 0em;
     font-size: 20px;
@@ -118,7 +131,7 @@ td.red {
 }
 td.yellow {
     padding: 0.3em;
-    font-size: 1.3em;
+    font-size: 1.2em;
     text-align: center;
     vertical-align: middle;
     background: linear-gradient(to bottom, transparent 10%, #F4FA58 80%), linear-gradient(#F7f7f7, #EEE);

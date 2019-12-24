@@ -21,9 +21,12 @@ define("TG", "SHOW");
 // set location info yes(SHOW) or not (SHOWNO)
 define("LOCATION", "SHOW");
 
+// set protocol version info yes(SHOW) or not (SHOWNO)
+define("PROTO", "SHOW");
+
 //do not change this values
 define("CLIENTLIST", "CALL");
-define("DBVERSION", "20191223.1526" );
+define("DBVERSION", "20191224.1512" );
 $lastheard_call = "CALL";
 $clients[] = array();
 // ----

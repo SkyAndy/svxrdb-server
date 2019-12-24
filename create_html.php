@@ -4,8 +4,8 @@ require_once('config.php');
 require_once('tgdb.php');
 
 $tuCurl = curl_init(); 
-curl_setopt($tuCurl, CURLOPT_URL, "http://hamcloud.info/status"); 
-curl_setopt($tuCurl, CURLOPT_PORT , 8090); 
+curl_setopt($tuCurl, CURLOPT_URL, "http://url.info/status"); 
+curl_setopt($tuCurl, CURLOPT_PORT , 1234); 
 curl_setopt($tuCurl, CURLOPT_VERBOSE, 0); 
 curl_setopt($tuCurl, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($tuCurl, CURLOPT_CONNECTTIMEOUT, 5); // 5 seconds timeout
@@ -40,7 +40,11 @@ if (count($callsign) >= 0){
     echo "<tr><th>Callsign client</th>\n\r";
 
     echo '<th class=\'state\'>State</th>'."\n\r";
-    
+
+    if( (PROTO == "SHOW") ) {
+    	echo '<th class=\'proto\'>Proto</th>'."\n\r";
+    }
+
     if( (TG == "SHOW") ) {
     	echo "<th>TG</th>\n\r";
     }
@@ -64,7 +68,16 @@ if (count($callsign) >= 0){
 			echo '<td class=\'grey\'>'.$data["nodes"][$callsign[$i]]["swVer"].'</td>'; 
 		}
 
-	   	// show talking tg optional with own tg text
+	   	// show protocoll version
+    		if( (PROTO == "SHOW") ) {
+			if(preg_match('/2/i',$data["nodes"][$callsign[$i]]["protoVer"]["majorVer"])) {
+				echo '<td class=\'grey\'>'.implode(".",$data["nodes"][$callsign[$i]]["protoVer"]).'</td>';
+			} else {
+				echo '<td class=\'yellow\'>'.implode(".",$data["nodes"][$callsign[$i]]["protoVer"]).'</td>';
+			}
+		}
+
+		// show talking tg optional with own tg text
     		if( (TG == "SHOW") ) {
                     if($data["nodes"][$callsign[$i]]["isTalker"]) {
 			echo '<td class=\'red\'>'.$data["nodes"][$callsign[$i]]["tg"].'</br>'.$tgdb_array[$data["nodes"][$callsign[$i]]["tg"]].'</td>';
