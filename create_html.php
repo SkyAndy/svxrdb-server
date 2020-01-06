@@ -4,8 +4,8 @@ require_once('config.php');
 require_once('tgdb.php');
 
 $tuCurl = curl_init(); 
-curl_setopt($tuCurl, CURLOPT_URL, "http://url.info/status"); 
-curl_setopt($tuCurl, CURLOPT_PORT , 1234); 
+curl_setopt($tuCurl, CURLOPT_URL, "http://url-to-svxreflector-domain"); 
+curl_setopt($tuCurl, CURLOPT_PORT , port-from-server); 
 curl_setopt($tuCurl, CURLOPT_VERBOSE, 0); 
 curl_setopt($tuCurl, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($tuCurl, CURLOPT_CONNECTTIMEOUT, 5); // 5 seconds timeout
