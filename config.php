@@ -26,8 +26,7 @@ define("PROTO", "SHOW");
 
 //do not change this values
 define("CLIENTLIST", "CALL");
-define("DBVERSION", "20191224.1512" );
-$lastheard_call = "CALL";
+define("DBVERSION", "20200127.1410" );
 $clients[] = array();
 // ----
 ?>

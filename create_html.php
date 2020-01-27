@@ -2,10 +2,12 @@
 
 require_once('config.php');
 require_once('tgdb.php');
+require('lastheard.php');
 
+error_reporting(E_ERROR);
 $tuCurl = curl_init(); 
-curl_setopt($tuCurl, CURLOPT_URL, "http://url-to-svxreflector-domain"); 
-curl_setopt($tuCurl, CURLOPT_PORT , port-from-server); 
+curl_setopt($tuCurl, CURLOPT_URL, "http://youdomain/status"); 
+curl_setopt($tuCurl, CURLOPT_PORT , youport); 
 curl_setopt($tuCurl, CURLOPT_VERBOSE, 0); 
 curl_setopt($tuCurl, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($tuCurl, CURLOPT_CONNECTTIMEOUT, 5); // 5 seconds timeout
@@ -57,17 +59,22 @@ if (count($callsign) >= 0){
     	echo "<th>Location</th>\n\r";
     }
 
+    try {
     for ($i=0; $i<count($callsign, 0); $i++)
     {
-           echo '<tr>';
-	   echo '<td class="green"><div class="tooltip">'.$callsign[$i].'<span class="tooltiptext">'.$data["nodes"][$callsign[$i]]["Sysop"].'</span></div></td>';
-                if ($data["nodes"][$callsign[$i]]["isTalker"]) {
-                    echo '<td class=\'tx\'></td>';
+	    echo '<tr>';
+	    if ( $callsign[$i] == $lastheard_call ) {
+	   	echo '<td class="yellow"><div class="tooltip">'.$callsign[$i].'<span class="tooltiptext">'.$data["nodes"][$callsign[$i]]["Sysop"].'</span></div></td>';
+	    } else {
+	   	echo '<td class="green"><div class="tooltip">'.$callsign[$i].'<span class="tooltiptext">'.$data["nodes"][$callsign[$i]]["Sysop"].'</span></div></td>';
+	    }
+		if ($data["nodes"][$callsign[$i]]["isTalker"]) {
+			echo '<td class=\'tx\'></td>';
 		} else { 
 			// set alternate info in when not talking
 			echo '<td class=\'grey\'>'.$data["nodes"][$callsign[$i]]["swVer"].'</td>'; 
 		}
-
+	  
 	   	// show protocoll version
     		if( (PROTO == "SHOW") ) {
 			if(preg_match('/2/i',$data["nodes"][$callsign[$i]]["protoVer"]["majorVer"])) {
@@ -81,6 +88,10 @@ if (count($callsign) >= 0){
     		if( (TG == "SHOW") ) {
                     if($data["nodes"][$callsign[$i]]["isTalker"]) {
 			echo '<td class=\'red\'>'.$data["nodes"][$callsign[$i]]["tg"].'</br>'.$tgdb_array[$data["nodes"][$callsign[$i]]["tg"]].'</td>';
+			$file = '/home/svxlink/html/svxrdb/lastheard.php';
+			$talker = '<?php $lastheard_call = "'.$callsign[$i].'";?>';
+			file_put_contents($file, $talker, LOCK_EX);
+			$lastheard_call = $callsign[$i];
 		    } else {
 			echo '<td class=\'grey\'>'.$data["nodes"][$callsign[$i]]["tg"].'</td>';
 		    }
@@ -96,10 +107,12 @@ if (count($callsign) >= 0){
 		echo "</tr>\n\r";
             } // END NEWLOGFILEDATA FALSE
         }
-
-
+	catch (MyException $ex)
+	{	
+	 //print_r($ex);
+	}
+	}
     echo "</table>\n\r";
-
 if( LEGEND == "EN") {
 echo '<pre>
 9*# -- Talk group status
