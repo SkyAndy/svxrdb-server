@@ -6,8 +6,8 @@ require('lastheard.php');
 
 error_reporting(E_ERROR);
 $tuCurl = curl_init(); 
-curl_setopt($tuCurl, CURLOPT_URL, "http://youdomain/status"); 
-curl_setopt($tuCurl, CURLOPT_PORT , youport); 
+curl_setopt($tuCurl, CURLOPT_URL, "http://yourlfromserver/status"); 
+curl_setopt($tuCurl, CURLOPT_PORT , YOUR-PORT); 
 curl_setopt($tuCurl, CURLOPT_VERBOSE, 0); 
 curl_setopt($tuCurl, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($tuCurl, CURLOPT_CONNECTTIMEOUT, 5); // 5 seconds timeout
@@ -39,9 +39,9 @@ if (count($callsign) >= 0){
     if( preg_match('/'.REFRESHSTATUS.'/i', 'SHOW')) {
         echo "<tr><th colspan='7'>SVXReflector-Dashboard -=[ ".date("Y-m-d | H:i:s"." ]=-</th></tr>\n\r");
     }
-    echo "<tr><th>Callsign client</th>\n\r";
+    echo "<tr><th>Callsign Client</th>\n\r";
 
-    echo '<th class=\'state\'>State</th>'."\n\r";
+    echo '<th class=\'state\'>Client Version</th>'."\n\r";
 
     if( (PROTO == "SHOW") ) {
     	echo '<th class=\'proto\'>Proto</th>'."\n\r";
@@ -64,7 +64,7 @@ if (count($callsign) >= 0){
     {
 	    echo '<tr>';
 	    if ( $callsign[$i] == $lastheard_call ) {
-	   	echo '<td class="yellow"><div class="tooltip">'.$callsign[$i].'<span class="tooltiptext">'.$data["nodes"][$callsign[$i]]["Sysop"].'</span></div></td>';
+	   	echo '<td class="yellow"><div class="tooltip">'.$callsign[$i].'<br>'.$lt_timestamp.'<span class="tooltiptext">'.$data["nodes"][$callsign[$i]]["Sysop"].'</span></div></td>';
 	    } else {
 	   	echo '<td class="green"><div class="tooltip">'.$callsign[$i].'<span class="tooltiptext">'.$data["nodes"][$callsign[$i]]["Sysop"].'</span></div></td>';
 	    }
@@ -89,7 +89,8 @@ if (count($callsign) >= 0){
                     if($data["nodes"][$callsign[$i]]["isTalker"]) {
 			echo '<td class=\'red\'>'.$data["nodes"][$callsign[$i]]["tg"].'</br>'.$tgdb_array[$data["nodes"][$callsign[$i]]["tg"]].'</td>';
 			$file = '/home/svxlink/html/svxrdb/lastheard.php';
-			$talker = '<?php $lastheard_call = "'.$callsign[$i].'";?>';
+		    	$now = date ('d-M H:i', time());
+			$talker = '<?php $lastheard_call = "'.$callsign[$i].'"; $lt_timestamp = "'.$now.'"; ?>';
 			file_put_contents($file, $talker, LOCK_EX);
 			$lastheard_call = $callsign[$i];
 		    } else {
