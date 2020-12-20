@@ -110,6 +110,17 @@ td.grey {
     background-position: right bottom;
     transition: all 0.6s ease-in;
 }
+td.darkred_small {
+    padding: 0.3em;
+    font-size: 1.em;
+    color: darkred;
+    text-align: center;
+    vertical-align: middle;
+    background: linear-gradient(to bottom, transparent 10%, #F3f3f3 80%), linear-gradient(#F7f7f7, #EEE);
+    background-size: 100% 100%;
+    background-position: right bottom;
+    transition: all 0.6s ease-in;
+}
 td.green {
     padding: 0.3em;
     font-size: 1.2em;

@@ -6,8 +6,8 @@ require('lastheard.php');
 
 error_reporting(E_ERROR);
 $tuCurl = curl_init(); 
-curl_setopt($tuCurl, CURLOPT_URL, "http://yourlfromserver/status"); 
-curl_setopt($tuCurl, CURLOPT_PORT , YOUR-PORT); 
+curl_setopt($tuCurl, CURLOPT_URL, "http://hamcloud.info/status"); 
+curl_setopt($tuCurl, CURLOPT_PORT , 8090); 
 curl_setopt($tuCurl, CURLOPT_VERBOSE, 0); 
 curl_setopt($tuCurl, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($tuCurl, CURLOPT_CONNECTTIMEOUT, 5); // 5 seconds timeout
@@ -72,7 +72,11 @@ if (count($callsign) >= 0){
 			echo '<td class=\'tx\'></td>';
 		} else { 
 			// set alternate info in when not talking
-			echo '<td class=\'grey\'>'.$data["nodes"][$callsign[$i]]["swVer"].'</td>'; 
+			if ($data["nodes"][$callsign[$i]]["swVer"] != SVXLINKVERSION) {
+				echo '<td class=\'darkred_small\'>'.$data["nodes"][$callsign[$i]]["swVer"].'<br /><font color=darkred size=1em>'.SVXLINKVERSION.'</font></td>';
+			} else {	
+				echo '<td class=\'grey\'>'.$data["nodes"][$callsign[$i]]["swVer"].'</td>';
+			}
 		}
 	  
 	   	// show protocoll version
@@ -89,9 +93,10 @@ if (count($callsign) >= 0){
                     if($data["nodes"][$callsign[$i]]["isTalker"]) {
 			echo '<td class=\'red\'>'.$data["nodes"][$callsign[$i]]["tg"].'</br>'.$tgdb_array[$data["nodes"][$callsign[$i]]["tg"]].'</td>';
 			$file = '/home/svxlink/html/svxrdb/lastheard.php';
+			touch($file);
 		    	$now = date ('d-M H:i', time());
 			$talker = '<?php $lastheard_call = "'.$callsign[$i].'"; $lt_timestamp = "'.$now.'"; ?>';
-			file_put_contents($file, $talker, LOCK_EX);
+			file_put_contents($file, $talker);
 			$lastheard_call = $callsign[$i];
 		    } else {
 			echo '<td class=\'grey\'>'.$data["nodes"][$callsign[$i]]["tg"].'</td>';
