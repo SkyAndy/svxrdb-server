@@ -5,6 +5,7 @@
   - Den Ordner in das Wurzelverzeichniss vom Webserverdeamon speichern
   - z.B. /var/www/html oder /var/www/html/httpdocs verschieben.
   - Pakete php-curl php-json installieren
+  - in der Konfiguration TIMESTAMP_FORMAT="%d.%m.%Y %H:%M:%S" einstellen.
 
 FUNKTIONEN:
   - zeigt den Aktuellen Status vom Client
@@ -13,7 +14,7 @@ FUNKTIONEN:
     - (STYLECSS)
 
 TODO:
-  - letes Aussendung mit Zeitstempel versehen
+  - letzte Aussendung mit Zeitstempel versehen
     - geht erst nach Anpassung in der svxreflector.cpp
   - Englische Übersetzung schreiben
 
