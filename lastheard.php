@@ -1,1 +1,1 @@
-<?php $lastheard_call = "DO0SE"; $lt_timestamp = "20-Dec 18:04"; ?>
+<?php $lastheard_call = "DB0TGO"; $lt_timestamp = "22-Dec 16:35"; ?>

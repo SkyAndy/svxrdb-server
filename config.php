@@ -26,10 +26,10 @@ define("PROTO", "SHOW");
 
 //do not change this values
 define("CLIENTLIST", "CALL");
-define("DBVERSION", "20201220.1804" );
+define("DBVERSION", "20201222.1600");
 
 //check lts svxlink from git
-define("SVXLINKVERSION","1.7.99.28");
+define("SVXLINKVERSION", "1.7.99.29" );
 
 $clients[] = array();
 // ----
