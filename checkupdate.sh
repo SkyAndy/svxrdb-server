@@ -8,7 +8,14 @@
 # 8 * * * * nice /home/svxlink/html/svxrdb/checkupdate.sh >/dev/null 2>&1
 
 DIRECTORY=/home/svxlink/html/svxrdb
-VERSION=$(wget -qO- https://raw.githubusercontent.com/sm0svx/svxlink/master/src/versions | grep "SVXLINK=" | cut -d"=" -f2)
+SVXL_VERSION=$(wget -qO- https://raw.githubusercontent.com/sm0svx/svxlink/master/src/versions | grep "SVXLINK=" | cut -d"=" -f2)
 # attention !!! -i write direct to file..remove -i for testing
-sed -i 's/SVXLINKVERSION.*$/SVXLINKVERSION\"\,\ \"'$VERSION'\"\ \)\;/' $DIRECTORY/config.php
+sed -i 's/SVXLINKVERSION.*$/SVXLINKVERSION\"\,\ \"'$SVXL_VERSION'\"\ \)\;/' $DIRECTORY/config.php
+
+# add your own source directory
+SRC_DIRECTORY=/home/svxlink/svxlink/src
+SVXR_VERSION=$(wget -qO- https://raw.githubusercontent.com/sm0svx/svxlink/master/src/versions | grep "SVXREFLECTOR=" | cut -d"=" -f2)
+SVXR_VERSION_LOCAL=$(grep SVXREFLECTOR $SRC_DIRECTORY/versions | cut -d "=" -f2)
+# attention !!! -i write direct to file..remove -i for testing
+sed -i 's/SVXREFLECTORVERSION.*$/SVXREFLECTORVERSION\"\,\ \"'$SVXR_VERSION'\ -> '$SVXR_VERSION_LOCAL'\"\ \)\;/' $DIRECTORY/config.php
 
