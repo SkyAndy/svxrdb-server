@@ -37,8 +37,13 @@ if (count($callsign) >= 0){
     echo "<main><table id=\"logtable\" with:80%>\n\r";
     
     if( preg_match('/'.REFRESHSTATUS.'/i', 'SHOW')) {
-        echo "<tr><th colspan='7'>SVXReflector-Dashboard -=[ ".date("Y-m-d | H:i:s"." ]=- ".SVXREFLECTORVERSION."</th></tr>\n\r");
-    }
+	    echo "<tr><th colspan='7'>SVXReflector-Dashboard -=[ ".date("Y-m-d | H:i:s")." ]=- ";
+	    if( preg_match('/'.SVXRV.'/i', 'SHOW')) {
+		    echo SVXREFLECTORVERSION;
+	    }
+	    echo "</th></tr>\n\r";
+	    }
+   
     echo "<tr><th>Callsign Client</th>\n\r";
 
     echo '<th class=\'state\'>Client Version</th>'."\n\r";

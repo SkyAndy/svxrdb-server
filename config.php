@@ -26,10 +26,13 @@ define("PROTO", "SHOW");
 
 //do not change this values
 define("CLIENTLIST", "CALL");
-define("DBVERSION", "20210501.1510");
+define("DBVERSION", "20210726.1708");
 
 //check lts svxlink from git
-define("SVXLINKVERSION", "1.7.99.51" );
+define("SVXLINKVERSION", "1.7.99.52" );
+
+// set showing git version from svxreflektor
+define("SVXRV", "SHOW");
 
 //check lts svxreflektor from git
 define("SVXREFLECTORVERSION", "1.99.8 -> 1.99.8" );
