@@ -1,21 +1,21 @@
 <?php
 
-require_once('config.php');
-require_once('tgdb.php');
-require('lastheard.php');
+require_once "config.php";
+require_once "tgdb.php";
+require "lastheard.php";
 
 error_reporting(E_ERROR);
-$tuCurl = curl_init(); 
-curl_setopt($tuCurl, CURLOPT_URL, "http://hamcloud.info/status"); 
-curl_setopt($tuCurl, CURLOPT_PORT , 8090); 
-curl_setopt($tuCurl, CURLOPT_VERBOSE, 0); 
+$tuCurl = curl_init();
+curl_setopt($tuCurl, CURLOPT_URL, "http://81.169.184.228/status");
+curl_setopt($tuCurl, CURLOPT_PORT, 8090);
+curl_setopt($tuCurl, CURLOPT_VERBOSE, 0);
 curl_setopt($tuCurl, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($tuCurl, CURLOPT_CONNECTTIMEOUT, 5); // 5 seconds timeout
 
-$tuData = curl_exec($tuCurl); 
+$tuData = curl_exec($tuCurl);
 curl_close($tuCurl);
 
-$data = json_decode($tuData,true);
+$data = json_decode($tuData, true);
 $callsign = array_keys($data["nodes"]);
 
 echo "<!DOCTYPE html>";
@@ -31,101 +31,277 @@ echo '<link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-i
 echo "\r\n<title>SVXLINKREFLECTOR</title>";
 
 $current_style = file_get_contents(STYLECSS);
-echo "<style type=\"text/css\">".$current_style."</style></head>\n\r";
+echo "<style type=\"text/css\">" . $current_style . "</style></head>\n\r";
 
-if (count($callsign) >= 0){
+if (count($callsign) >= 0) {
     echo "<main><table id=\"logtable\" with:80%>\n\r";
-    
-    if( preg_match('/'.REFRESHSTATUS.'/i', 'SHOW')) {
-	    echo "<tr><th colspan='7'>SVXReflector-Dashboard -=[ ".date("Y-m-d | H:i:s")." ]=- ";
-	    if( preg_match('/'.SVXRV.'/i', 'SHOW')) {
-		    echo SVXREFLECTORVERSION;
-	    }
-	    echo "</th></tr>\n\r";
-	    }
-   
+
+    if (preg_match("/" . REFRESHSTATUS . "/i", "SHOW")) {
+        echo "<tr><th colspan='7'>SVXReflector-Dashboard -=[ " .
+            date("Y-m-d | H:i:s") .
+            " ]=- ";
+        if (preg_match("/" . SVXRV . "/i", "SHOW")) {
+            echo SVXREFLECTORVERSION;
+        }
+        echo "</th></tr>\n\r";
+    }
+
     echo "<tr><th>Callsign Client</th>\n\r";
 
-    echo '<th class=\'state\'>Client Version</th>'."\n\r";
+    echo '<th class=\'state\'>Client Version</th>' . "\n\r";
 
-    if( (PROTO == "SHOW") ) {
-    	echo '<th class=\'proto\'>Proto</th>'."\n\r";
+    if (PROTO == "SHOW") {
+        echo '<th class=\'proto\'>Proto</th>' . "\n\r";
     }
 
-    if( (TG == "SHOW") ) {
-    	echo "<th>TG</th>\n\r";
+    if (TG == "SHOW") {
+        echo "<th>TG</th>\n\r";
     }
 
-    if( (MON == "SHOW") ) {
-    	echo "<th>Monitor TG</th>\n\r";
+    if (MON == "SHOW") {
+        echo "<th>Monitor TG</th>\n\r";
     }
 
-    if( (LOCATION == "SHOW") ) {
-    	echo "<th>Location</th>\n\r";
+    if (LOCATION == "SHOW") {
+        echo "<th>Location</th>\n\r";
     }
 
     try {
-    for ($i=0; $i<count($callsign, 0); $i++)
-    {
-	    echo '<tr>';
-	    if ( $callsign[$i] == $lastheard_call ) {
-	   	echo '<td class="yellow"><div class="tooltip">'.$callsign[$i].'<br>'.$lt_timestamp.'<span class="tooltiptext">'.$data["nodes"][$callsign[$i]]["Sysop"].'</span></div></td>';
-	    } else {
-	   	echo '<td class="green"><div class="tooltip">'.$callsign[$i].'<span class="tooltiptext">'.$data["nodes"][$callsign[$i]]["Sysop"].'</span></div></td>';
-	    }
-		if ($data["nodes"][$callsign[$i]]["isTalker"]) {
-			echo '<td class=\'tx\'></td>';
-		} else { 
-			// set alternate info in when not talking
-			if ($data["nodes"][$callsign[$i]]["swVer"] != SVXLINKVERSION) {
-				echo '<td class=\'darkred_small\'>'.$data["nodes"][$callsign[$i]]["swVer"].'<br /><font color=darkred size=1em>'.SVXLINKVERSION.'</font></td>';
-			} else {	
-				echo '<td class=\'grey\'>'.$data["nodes"][$callsign[$i]]["swVer"].'</td>';
-			}
-		}
-	  
-	   	// show protocoll version
-    		if( (PROTO == "SHOW") ) {
-			if(preg_match('/2/i',$data["nodes"][$callsign[$i]]["protoVer"]["majorVer"])) {
-				echo '<td class=\'grey\'>'.implode(".",$data["nodes"][$callsign[$i]]["protoVer"]).'</td>';
-			} else {
-				echo '<td class=\'yellow\'>'.implode(".",$data["nodes"][$callsign[$i]]["protoVer"]).'</td>';
-			}
-		}
+        for ($i = 0; $i < count($callsign, 0); $i++) {
+            // Filter DB0/DM0/DO0/DP0 with RegEx
+            if (
+                preg_match(
+                    "/[D][B|M|O|P][0][A-Z][A-Z]*/m",
+                    strtoupper($callsign[$i])
+                )
+            ) {
+                echo "<tr>";
+                if ($callsign[$i] == $lastheard_call) {
+                    echo '<td class="yellow"><div class="tooltip">' .
+                        $callsign[$i] .
+                        "<br>" .
+                        $lt_timestamp .
+                        '<span class="tooltiptext">' .
+                        $data["nodes"][$callsign[$i]]["Sysop"] .
+                        "</span></div></td>";
+                } else {
+                    echo '<td class="green"><div class="tooltip">' .
+                        $callsign[$i] .
+                        '<span class="tooltiptext">' .
+                        $data["nodes"][$callsign[$i]]["Sysop"] .
+                        "</span></div></td>";
+                }
+                if ($data["nodes"][$callsign[$i]]["isTalker"]) {
+                    echo '<td class=\'tx\'></td>';
+                } else {
+                    // set alternate info in when not talking
+                    if (
+                        $data["nodes"][$callsign[$i]]["swVer"] != SVXLINKVERSION
+                    ) {
+                        echo '<td class=\'darkred_small\'>' .
+                            $data["nodes"][$callsign[$i]]["swVer"] .
+                            "<br /><font color=darkred size=1em>" .
+                            SVXLINKVERSION .
+                            "</font></td>";
+                    } else {
+                        echo '<td class=\'grey\'>' .
+                            $data["nodes"][$callsign[$i]]["swVer"] .
+                            "</td>";
+                    }
+                }
 
-		// show talking tg optional with own tg text
-    		if( (TG == "SHOW") ) {
-                    if($data["nodes"][$callsign[$i]]["isTalker"]) {
-			echo '<td class=\'red\'>'.$data["nodes"][$callsign[$i]]["tg"].'</br>'.$tgdb_array[$data["nodes"][$callsign[$i]]["tg"]].'</td>';
-			$file = '/home/svxlink/html/svxrdb/lastheard.php';
-			touch($file);
-		    	$now = date ('d-M H:i', time());
-			$talker = '<?php $lastheard_call = "'.$callsign[$i].'"; $lt_timestamp = "'.$now.'"; ?>';
-			file_put_contents($file, $talker);
-			$lastheard_call = $callsign[$i];
-		    } else {
-			echo '<td class=\'grey\'>'.$data["nodes"][$callsign[$i]]["tg"].'</td>';
-		    }
-		}
+                // show protocoll version
+                if (PROTO == "SHOW") {
+                    if (
+                        preg_match(
+                            "/2/i",
+                            $data["nodes"][$callsign[$i]]["protoVer"][
+                                "majorVer"
+                            ]
+                        )
+                    ) {
+                        echo '<td class=\'grey\'>' .
+                            implode(
+                                ".",
+                                $data["nodes"][$callsign[$i]]["protoVer"]
+                            ) .
+                            "</td>";
+                    } else {
+                        echo '<td class=\'yellow\'>' .
+                            implode(
+                                ".",
+                                $data["nodes"][$callsign[$i]]["protoVer"]
+                            ) .
+                            "</td>";
+                    }
+                }
 
-    		if( (MON == "SHOW") ) {
-		    echo '<td class="grey">'.implode(" ",$data["nodes"][$callsign[$i]]["monitoredTGs"]).'</td>';
-		}
+                // show talking tg optional with own tg text
+                if (TG == "SHOW") {
+                    if ($data["nodes"][$callsign[$i]]["isTalker"]) {
+                        echo '<td class=\'red\'>' .
+                            $data["nodes"][$callsign[$i]]["tg"] .
+                            "</br>" .
+                            $tgdb_array[$data["nodes"][$callsign[$i]]["tg"]] .
+                            "</td>";
+                        $file = "/home/svxlink/html/svxrdb/lastheard.php";
+                        touch($file);
+                        $now = date("d-M H:i", time());
+                        $talker =
+                            '<?php $lastheard_call = "' .
+                            $callsign[$i] .
+                            '"; $lt_timestamp = "' .
+                            $now .
+                            '"; ?>';
+                        file_put_contents($file, $talker);
+                        $lastheard_call = $callsign[$i];
+                    } else {
+                        echo '<td class=\'grey\'>' .
+                            $data["nodes"][$callsign[$i]]["tg"] .
+                            "</td>";
+                    }
+                }
 
-    		if( (LOCATION == "SHOW") ) {
-		   echo '<td class="grey">'.$data["nodes"][$callsign[$i]]["nodeLocation"].'</td>';
-		}
-		echo "</tr>\n\r";
-            } // END NEWLOGFILEDATA FALSE
-        }
-	catch (MyException $ex)
-	{	
-	 //print_r($ex);
-	}
-	}
-    echo "</table>\n\r";
-if( LEGEND == "EN") {
-echo '<pre>
+                if (MON == "SHOW") {
+                    echo '<td class="grey">' .
+                        implode(
+                            " ",
+                            $data["nodes"][$callsign[$i]]["monitoredTGs"]
+                        ) .
+                        "</td>";
+                }
+
+                if (LOCATION == "SHOW") {
+                    echo '<td class="grey">' .
+                        $data["nodes"][$callsign[$i]]["nodeLocation"] .
+                        "</td>";
+                }
+
+                echo "</tr>\n\r";
+            } // END SORT REPEATER
+        } // END CALL LOOP
+	
+	
+	for ($i = 0; $i < count($callsign, 0); $i++) {
+            // Filter DB0/DM0/DO0/DP0 with RegEx
+            if (
+               !preg_match(
+                    "/[D][B|M|O|P][0][A-Z][A-Z]*/m",
+                    strtoupper($callsign[$i])
+                )
+            ) {
+                echo "<tr>";
+                if ($callsign[$i] == $lastheard_call) {
+                    echo '<td class="yellow"><div class="tooltip">' .
+                        $callsign[$i] .
+                        "<br>" .
+                        $lt_timestamp .
+                        '<span class="tooltiptext">' .
+                        $data["nodes"][$callsign[$i]]["Sysop"] .
+                        "</span></div></td>";
+                } else {
+                    echo '<td class="green"><div class="tooltip">' .
+                        $callsign[$i] .
+                        '<span class="tooltiptext">' .
+                        $data["nodes"][$callsign[$i]]["Sysop"] .
+                        "</span></div></td>";
+                }
+                if ($data["nodes"][$callsign[$i]]["isTalker"]) {
+                    echo '<td class=\'tx\'></td>';
+                } else {
+                    // set alternate info in when not talking
+                    if (
+                        $data["nodes"][$callsign[$i]]["swVer"] != SVXLINKVERSION
+                    ) {
+                        echo '<td class=\'darkred_small\'>' .
+                            $data["nodes"][$callsign[$i]]["swVer"] .
+                            "<br /><font color=darkred size=1em>" .
+                            SVXLINKVERSION .
+                            "</font></td>";
+                    } else {
+                        echo '<td class=\'grey\'>' .
+                            $data["nodes"][$callsign[$i]]["swVer"] .
+                            "</td>";
+                    }
+                }
+
+                // show protocoll version
+                if (PROTO == "SHOW") {
+                    if (
+                        preg_match(
+                            "/2/i",
+                            $data["nodes"][$callsign[$i]]["protoVer"][
+                                "majorVer"
+                            ]
+                        )
+                    ) {
+                        echo '<td class=\'grey\'>' .
+                            implode(
+                                ".",
+                                $data["nodes"][$callsign[$i]]["protoVer"]
+                            ) .
+                            "</td>";
+                    } else {
+                        echo '<td class=\'yellow\'>' .
+                            implode(
+                                ".",
+                                $data["nodes"][$callsign[$i]]["protoVer"]
+                            ) .
+                            "</td>";
+                    }
+                }
+
+                // show talking tg optional with own tg text
+                if (TG == "SHOW") {
+                    if ($data["nodes"][$callsign[$i]]["isTalker"]) {
+                        echo '<td class=\'red\'>' .
+                            $data["nodes"][$callsign[$i]]["tg"] .
+                            "</br>" .
+                            $tgdb_array[$data["nodes"][$callsign[$i]]["tg"]] .
+                            "</td>";
+                        $file = "/home/svxlink/html/svxrdb/lastheard.php";
+                        touch($file);
+                        $now = date("d-M H:i", time());
+                        $talker =
+                            '<?php $lastheard_call = "' .
+                            $callsign[$i] .
+                            '"; $lt_timestamp = "' .
+                            $now .
+                            '"; ?>';
+                        file_put_contents($file, $talker);
+                        $lastheard_call = $callsign[$i];
+                    } else {
+                        echo '<td class=\'grey\'>' .
+                            $data["nodes"][$callsign[$i]]["tg"] .
+                            "</td>";
+                    }
+                }
+
+                if (MON == "SHOW") {
+                    echo '<td class="grey">' .
+                        implode(
+                            " ",
+                            $data["nodes"][$callsign[$i]]["monitoredTGs"]
+                        ) .
+                        "</td>";
+                }
+
+                if (LOCATION == "SHOW") {
+                    echo '<td class="grey">' .
+                        $data["nodes"][$callsign[$i]]["nodeLocation"] .
+                        "</td>";
+                }
+                echo "</tr>\n\r";
+            } // ENDE ONLY REPEATER
+        } // END CALL LOOP
+        echo "</table>\n\r";
+    } catch (MyException $ex) {
+        //print_r($ex);
+    }
+}
+
+if (LEGEND == "EN") {
+    echo '<pre>
 9*# -- Talk group status
 90# -- Not implemented yet. Reserved for help.
 91# -- Select previous talk group
@@ -136,11 +312,10 @@ echo '<pre>
 94[TG]# -- Temporarily monitor TG#
 <br>
 ';
-
 }
 
-if( LEGEND == "DE") {
-echo '<pre>
+if (LEGEND == "DE") {
+    echo '<pre>
 9*# -- Sprechgruppen-Status
 90# -- Noch nicht implementiert. Reserviert für Hilfefunktion.
 91# -- W&auml;hle die vorherige Sprechgruppe
@@ -152,5 +327,7 @@ echo '<pre>
 ';
 }
 
-echo '<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons Lizenzvertrag" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a>&nbsp;<a style="font-size: 12px; text-decoration: none" rel="github" href="https://github.com/SkyAndy/svxrdb-server/">get your own Dashboard v'.DBVERSION.'</a>';
+echo '<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons Lizenzvertrag" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a>&nbsp;<a style="font-size: 12px; text-decoration: none" rel="github" href="https://github.com/SkyAndy/svxrdb-server/">get your own Dashboard v' .
+    DBVERSION .
+    "</a>";
 ?>
