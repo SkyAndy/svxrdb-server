@@ -150,3 +150,13 @@ td.yellow {
     background-position: right bottom;
     transition: all 0.6s ease-in;
 }
+td.blue {
+    padding: 0.3em;
+    font-size: .8em;
+    text-align: center;
+    vertical-align: middle;
+    background: linear-gradient(to left, transparent 10%, #DFD8D8 80%), linear-gradient(#0000cd, #EEE);
+    background-size: 100% 100%;
+    background-position: right bottom;
+    transition: all 0.6s ease-in;
+}

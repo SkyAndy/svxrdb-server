@@ -200,7 +200,7 @@ if (count($callsign) >= 0) {
                         $data["nodes"][$callsign[$i]]["Sysop"] .
                         "</span></div></td>";
                 } else {
-                    echo '<td class="green"><div class="tooltip">' .
+                    echo '<td class="blue"><div class="tooltip">' .
                         $callsign[$i] .
                         '<span class="tooltiptext">' .
                         $data["nodes"][$callsign[$i]]["Sysop"] .
