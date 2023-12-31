@@ -6,7 +6,7 @@ require "lastheard.php";
 
 error_reporting(E_ERROR);
 $tuCurl = curl_init();
-curl_setopt($tuCurl, CURLOPT_URL, "http://81.169.184.228/status");
+curl_setopt($tuCurl, CURLOPT_URL, "http://localhost/status");
 curl_setopt($tuCurl, CURLOPT_PORT, 8090);
 curl_setopt($tuCurl, CURLOPT_VERBOSE, 0);
 curl_setopt($tuCurl, CURLOPT_RETURNTRANSFER, 1);
