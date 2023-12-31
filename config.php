@@ -26,7 +26,7 @@ define("PROTO", "SHOW");
 
 //do not change this values
 define("CLIENTLIST", "CALL");
-define("DBVERSION", "20230219.2103");
+define("DBVERSION", "20231231.1244");
 
 //check lts svxlink from git
 define("SVXLINKVERSION", "1.7.99.75" );
